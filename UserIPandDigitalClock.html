@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>client ip address and digital clock</title>
+
+    <link rel="stylesheet" href="DigitalClock/StyleClock.css">
+</head>
+
+<body>
+
+    <h3>IP Address of user is:</h3> 
+
+    <p style="color: red;"><strong id="ip"></strong></p> 
+
+   <!-- <h3>Time:</h3> 
+
+    <p style="color: blue"><strong id="clock"></strong></p>-->
+
+    <div class="clock">
+        <div id="Date"></div>
+          <ul>
+              <li id="hours"></li>
+              <li id="point">:</li>
+              <li id="min"></li>
+              <li id="point">:</li>
+              <li id="sec"></li>
+          </ul>
+        </div>
+        
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+
+        $.getJSON("https://api.ipify.org?format=json", function(data) { 
+
+
+            $("#ip").html(data.ip); 
+
+            
+
+        }) 
+
+        function updateClock ( )
+ 	{
+ 	var currentTime = new Date ( );
+  	var currentHours = currentTime.getHours ( );
+  	var currentMinutes = currentTime.getMinutes ( );
+  	var currentSeconds = currentTime.getSeconds ( );
+
+  	// Pad the minutes and seconds with leading zeros, if required
+  	currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
+  	currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
+
+  	// Choose either "AM" or "PM" as appropriate
+  	var timeOfDay = ( currentHours < 12 ) ? "AM" : "PM";
+
+  	// Convert the hours component to 12-hour format if needed
+  	currentHours = ( currentHours > 12 ) ? currentHours - 12 : currentHours;
+
+  	// Convert an hours component of "0" to "12"
+      currentHours = ( currentHours == 0 ) ? 12 : currentHours;
+      
+      // Compose the string for display
+  	var currentTimeString = currentHours + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
+  	
+  	
+      $("#clock").html(currentTimeString);
+            
+}
+
+$(document).ready(function()
+{
+  setInterval('updateClock()', 1000);
+
+  var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; 
+    var dayNames= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    
+    
+    var newDate = new Date();
+    
+    newDate.setDate(newDate.getDate());
+     
+    $('#Date').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
+    
+    setInterval( function() {
+    
+      var seconds = new Date().getSeconds();
+    
+      $("#sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+      },1000);
+      
+    setInterval( function() {
+    
+      var minutes = new Date().getMinutes();
+    
+      $("#min").html(( minutes < 10 ? "0" : "" ) + minutes);
+        },1000);
+      
+    setInterval( function() {
+    
+      var hours = new Date().getHours();
+    
+      $("#hours").html(( hours < 10 ? "0" : "" ) + hours);
+        }, 1000); 
+});
+
+    </script> 
+
+</body>
+
+</html>
